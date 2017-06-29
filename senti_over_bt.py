@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+
+#Begin
+
+
+#Importing the libraries
 
 from textblob import TextBlob as tb
 import tweepy
@@ -6,7 +13,9 @@ import time
 
 print("\nStart")
 
-## Functions
+## Function Definitio
+
+## Searches for nearby devices and asks the user to select one, On selection, returns it's MAC ADDRESS
 def inquiry():
     
     print("performing inquiry...")
@@ -27,27 +36,9 @@ def inquiry():
     return addr
     
 
-##To find mac_address of the bluetooth device
-"""
-def find_mac():
-    target_name = input('Input device name\n')
-    target_addr = None
-
-    nearby_devices = bluetooth.discover_devices()
-    for btaddr in nearby_devices:
-        if target_name == bluetooth.lookup_name(btaddr):
-            target_addr = btaddr
-            break
-
-    if target_addr is not None :
-         print("Matching device found", target_name)
-    else:
-         print("No required device found")
-    return target_addr
-"""
-
 
 #To find listening port of the bluetooth module
+
 def find_port(mac):
     for port in range(1,31):
         s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -59,19 +50,12 @@ def find_port(mac):
             return port
         except:
             s.close()
-"""
-def try_port(mac):
-
-    while True:
-        p=bluetooth.PORT_ANY
-        s=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        s.bind((mac,p))
-        s.close
-        if p != 0 :
-            return p 
             break
 
-"""
+
+
+# To convert NLTK Output into Sensible form
+
 def conv(x):
     if x > 0:
         return ("Positive","Forward",'F')
@@ -80,15 +64,21 @@ def conv(x):
     else :
         return ("Neutral","Nowhere", 'N')
 
-mac = inquiry() #find_mac()
-port =  find_port(mac) #try_port(mac)
+
+
+#Calling the functions
+
+mac = inquiry() # Getting a Mac
+port =  find_port(mac) #Getting a Listening PORT
 print("port found", port)
-s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-s.connect(( mac ,port))
+s = bluetooth.BluetoothSocket(bluetooth.RFCOMM) #Creating a bluetooth socket for connection
+s.connect(( mac ,port)) # Connecting the socket to the other device using MAC and PORT
 print("\n Port Connected\n")
 
 
 ## SENTIMENT MODULE  
+
+# Twitter Authenication Keys
 cons_key = 'ABkhGSqsTjrkXJx0ODZlEjHvi'
 cons_secret = 'YsPyhMOZfGLOpNjTAHpq8z0RyTLuYIftDQ7NwN0lBp8zID1THf'
 
@@ -96,6 +86,7 @@ cons_secret = 'YsPyhMOZfGLOpNjTAHpq8z0RyTLuYIftDQ7NwN0lBp8zID1THf'
 access_token ='192923260-kvYRRIvP0JskbKDgF9rKBTritiCYnIsom746P7ZU'
 access_token_secret ='uC89Dg3gEIJIKPGWBbkl7ZYvMSbsDgawYB0TeLKNaDOOX'
 
+#Getting Twitter Access
 auth = tweepy.OAuthHandler(cons_key, cons_secret)
 auth.set_access_token(access_token, access_token_secret)
 
@@ -104,6 +95,7 @@ print("\nTwitter Authorization Success!\n")
 
 api = tweepy.API(auth)
 
+#Asking to search for a tweet term
 while True:
 
     term = input("\nEnter Tweet Search Term, To exit enter 'stopcode' \n")
@@ -120,6 +112,7 @@ while True:
 
 sent_dict = {}
 
+#Analysing tweets one by one and sending it over bluetooth within a specific time interval
 for tweet in public_tweets:
     analysis = tb(tweet.text)
     sent_dict.update({tweet.text:analysis.sentiment.polarity})
