@@ -35,12 +35,12 @@ print("\n Port Connected\n")
 
 ## SENTIMENT MODULE 
 #Twitter Authorization keys
-cons_key = 'ABkhGSqsTjrkXJx0ODZlEjHvi'
-cons_secret = 'YsPyhMOZfGLOpNjTAHpq8z0RyTLuYIftDQ7NwN0lBp8zID1THf'
+cons_key = '\# Put Your own cons key'
+cons_secret = '\# Put Your own cons secret'
 
 
-access_token ='192923260-kvYRRIvP0JskbKDgF9rKBTritiCYnIsom746P7ZU'
-access_token_secret ='uC89Dg3gEIJIKPGWBbkl7ZYvMSbsDgawYB0TeLKNaDOOX'
+access_token ='\# Put Your own '
+access_token_secret ='\# Put Your own'
 
 #Getting Twitter Access
 auth = tweepy.OAuthHandler(cons_key, cons_secret)
